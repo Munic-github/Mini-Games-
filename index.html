@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Game</title>
+
+    <style>
+      /* RESET */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          Segoe UI,
+          sans-serif;
+      }
+
+      /* BACKGROUND */
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      }
+
+      /* CONTAINER */
+      .container {
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 420px;
+      }
+
+      /* TITLE */
+      h2 {
+        color: #ff4d6d;
+        margin-bottom: 10px;
+        font-size: clamp(20px, 4vw, 28px);
+      }
+
+      /* SCORE */
+      #score {
+        font-size: clamp(18px, 3vw, 24px);
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
+
+      /* HEART */
+      #heart {
+        position: absolute;
+        font-size: clamp(40px, 8vw, 60px);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      #heart:hover {
+        transform: scale(1.2);
+      }
+
+      /* MESSAGE */
+      #messageBox {
+        height: 40px;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #ff4d6d;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.4s;
+      }
+
+      #messageBox.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* RESPONSIVE EXTRA */
+      @media (max-width: 500px) {
+        .container {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Kumpulkan Hati ❤️</h2>
+      <div id="score">Score: 0</div>
+      <div id="messageBox"></div>
+    </div>
+
+    <div id="heart">❤️</div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+      <source src="song.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      let score = 0;
+      let heart = document.getElementById("heart");
+      let messageBox = document.getElementById("messageBox");
+      let music = document.getElementById("bgMusic");
+
+      /* daftar pesan */
+      const messages = [
+        "aloo ayaaaa 😊",
+        "Semangat ya ✨",
+        "Kamu hebat 😎",
+        "ayaaaaaa 🎯",
+        "ayiiiii 🎯",
+        "ayoooo",
+        "Sedikit lagi 🎯",
+        "Siap lanjut 🚀",
+      ];
+
+      /* posisi random */
+      function moveHeart() {
+        heart.style.top = Math.random() * (window.innerHeight - 100) + "px";
+        heart.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      }
+
+      /* mulai musik saat klik pertama */
+      document.addEventListener(
+        "click",
+        () => {
+          music.volume = 0.4;
+          music.play();
+        },
+        { once: true },
+      );
+
+      /* klik heart */
+      heart.onclick = function () {
+        score++;
+        document.getElementById("score").innerText = "Score: " + score;
+
+        messageBox.classList.remove("show");
+        void messageBox.offsetWidth;
+        messageBox.innerText = messages[(score - 1) % messages.length];
+        messageBox.classList.add("show");
+
+        moveHeart();
+
+        if (score >= 8) {
+          setTimeout(() => {
+            window.location.href = "dialog.html";
+          }, 1000);
+        }
+      };
+
+      moveHeart();
+    </script>
+  </body>
+</html>
